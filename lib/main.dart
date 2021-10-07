@@ -13,13 +13,60 @@ import 'package:dean_institute_mobile_app/utility/app_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'dart:io';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+
 
 void main() {
-  runApp(MyApp());
+   runApp(HomePage());
+
+ 
+
 }
 
 //checking some git functions
-class MyApp extends StatelessWidget {
+  
+//class MyApp extends StatelessWidget {
+  class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+   bool isConnected=true;
+
+  // This function is triggered when the floating button is pressed
+  Future<void> _checkInternetConnection() async {
+    try {
+      final response = await InternetAddress.lookup('www.google.com');
+      if (response.isNotEmpty) {
+        print("www");
+         final snackBar = SnackBar(
+            content: Text("your'e Offline"),
+          );
+        setState(() {
+         isConnected = true;
+        });
+      }
+    } on SocketException catch (err) {
+       // Get.to(HomePage());
+        
+       final snackBar = SnackBar(
+            content: Text("your'e Offline"),
+          );
+      setState(() {
+        isConnected = false;
+      });
+      print(err);
+    }
+  }
+
+   @override
+  void initState() {
+    _checkInternetConnection();
+ super.initState();
+  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -46,7 +93,8 @@ class MyApp extends StatelessWidget {
           ),
           GetPage(
             name: "/signUp",
-            page: () => SignUpPage(),
+           // page: () => SignUpPage(),
+           page: () =>  RegisterPage (),
           ),
           GetPage(
             name: "/",

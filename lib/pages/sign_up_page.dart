@@ -8,66 +8,24 @@ import 'package:dean_institute_mobile_app/ui/auth/login/login_page.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SignUpPage extends StatelessWidget {
+//class SignUpPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
+  @override
+  _RegisterPageState createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  
+
 //const SignUpPage({Key? key}) : super(key: key);
+ 
  bool _isLoading = false;
   var errorMsg;
   static TextEditingController nameController = new TextEditingController();
 static TextEditingController emailController = new TextEditingController();
   static TextEditingController passwordController = new TextEditingController();
   @override
-  void post(){
-    bool _isLoading = false;
-  var errorMsg;
-  
-  
-  Register(String name, email, pass,) async {
-    
-  // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    Map data = {
-      'name':name,
-      'email': email,
-      'password': pass
-    };
-    var jsonResponse = null;
-  //Uri('https://reqres.in/api/register');
-    var response = await http.post(Uri.parse('https://deaninstitute.fastrider.co/api/registration'), body: data);
-    if(response.statusCode == 200) {
-     // Get.to(HomePage());
-      jsonResponse = json.decode(response.body);
-      print(jsonResponse);  
-      print("sucess");
-       //Get.to(HomePage());
-       Get.to(LoginPage());
-
-    // if(jsonResponse != null) {
-     //   setState(() {
-        //  _isLoading = false;
-      // });
-      // sharedPreferences.setString("token", jsonResponse['token']);
-       // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => MyApp()), (Route<dynamic> route) => false);
-    ///  GetPage(
-         //  name: "/",
-          // page: () => HomePage();
-           // Navigator.push(context,MaterialPageRoute(builder: (context) =>LoginPage()),
-           // );
-            // page: () => LoginPage(),
-          //);
-     // }
-    }
-    else {
-     // setState(() {
-     //   _isLoading = false;
-     // });
-      errorMsg = response.body;
-      print("The error message is: ${response.body}");
-      print("nooo");
-    }
-  }
-  Register(nameController.text,emailController.text, passwordController.text);
- }
-
-  Widget build(BuildContext context) {
+   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -123,7 +81,7 @@ static TextEditingController emailController = new TextEditingController();
                         CheckBoxWithTitle(),
                         ElevatedButton(
                           onPressed: () {
-                            post();
+                             Register(nameController.text,emailController.text, passwordController.text);
                           //  Register(nameController.text,emailController.text, passwordController.text);
                           },
                           style: ElevatedButton.styleFrom(
@@ -153,6 +111,44 @@ static TextEditingController emailController = new TextEditingController();
     );
   }
 }
+
+   Register(String name, email, pass,) async {
+       bool _isLoading = false;
+  var errorMsg;
+  
+    
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+   Map data = {
+      'name':name,
+      'email': email,
+      'password': pass
+    };
+   
+    var jsonResponse = null;
+    var token;  
+    var response = await http.post(Uri.parse('https://deaninstitute.fastrider.co/api/registration'),headers: {"Accept": "application/json"}, body: data);
+    //var response = await http.post("https://reqres.in/api/register", body: data);
+    if(response.statusCode == 200) {
+      Get.to(LoginPage());
+      jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+      if(jsonResponse != null) {
+       // setState(() {
+         // _isLoading = false;
+       // });
+       //sharedPreferences.setString("email", jsonResponse['email']);
+       // Get.to(LoginPage());
+      //  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => MainPage()), (Route<dynamic> route) => false);
+      }
+    }
+    else {
+    //  setState(() {
+       // _isLoading = false;
+    //  });
+      errorMsg = response.body;
+      print("The error message is: ${response.body}");
+    }
+  }
 
 class CheckBoxWithTitle extends StatefulWidget {
   const CheckBoxWithTitle({

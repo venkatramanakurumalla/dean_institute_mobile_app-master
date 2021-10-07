@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:dean_institute_mobile_app/pages/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 
 class LoginPage extends StatelessWidget {
@@ -16,18 +17,27 @@ class LoginPage extends StatelessWidget {
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  FlutterSecureStorage localStorage = new FlutterSecureStorage();
+   
 
  /// _login() {
     //controller.loginUser(, password);
   //}
-
+ j(){
+ FlutterSecureStorage localStorage = new FlutterSecureStorage();
+     localStorage.write(key: "email", value: "email").obs;
+      var k=localStorage.read(key: "email").obs;
+     }
  // @override
  void post(){
+   j();
     bool _isLoading = false;
   var errorMsg;
   Register(String  email, pass,) async {
-    
-  // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    FlutterSecureStorage _localStorage = new FlutterSecureStorage();
+     await _localStorage.write(key: "email", value: "email").obs;
+     
+// SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     Map data = {
       
       'email': email,
@@ -37,16 +47,19 @@ class LoginPage extends StatelessWidget {
   //Uri('https://reqres.in/api/register');
     var response = await http.post(Uri.parse('https://deaninstitute.fastrider.co/api/login'), body: data);
     if(response.statusCode == 200) {
+       
      Get.to(HomePage());
       jsonResponse = json.decode(response.body);
-      print(jsonResponse);  
+      print(jsonResponse); 
+       
       print("sucess");
+      //SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
        //Get.to(HomePage());
      //if(jsonResponse != null) {
      //   setState(() {
         //  _isLoading = false;
       // });
-      //  sharedPreferences.setString("token", jsonResponse['token']);
+     //   sharedPreferences.setString("token", jsonResponse['token']);
        // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => MyApp()), (Route<dynamic> route) => false);
     ///  GetPage(
          //  name: "/",
@@ -70,11 +83,14 @@ class LoginPage extends StatelessWidget {
  }
 
   void postt(){Register(String email, pass) async {
+    j();
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    FlutterSecureStorage _localStorage = new FlutterSecureStorage();
     Map data = {
       'email': email,
       'password': pass
-    };
+    }; 
+    await _localStorage.write(key: "email", value: "email");
     var jsonResponse = null;
     var response = await http.post(Uri.parse('https://deaninstitute.fastrider.co/api/login'), body: data);
     if(response.statusCode == 200) {
@@ -151,7 +167,10 @@ class LoginPage extends StatelessWidget {
                       children: [
                      //   CheckBoxWithTitle(),
                         ElevatedButton(
-                          onPressed: () {
+                          onPressed: () { 
+     
+                          
+          
                             post();
                           //  Register(nameController.text,emailController.text, passwordController.text);
                           },

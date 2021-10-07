@@ -1,21 +1,44 @@
+import 'package:dean_institute_mobile_app/pages/home_page.dart';
 import 'package:dean_institute_mobile_app/pages/profile_pages/payment_history.dart';
 import 'package:dean_institute_mobile_app/pages/profile_pages/update_profile.dart';
+import 'package:dean_institute_mobile_app/ui/auth/login/login_page.dart';
+import 'package:dean_institute_mobile_app/ui/splash/welcome_page.dart';
 import 'package:dean_institute_mobile_app/utility/constants.dart';
 import 'package:dean_institute_mobile_app/widgets/custom_divider.dart';
 import 'package:dean_institute_mobile_app/widgets/custom_row_tile.dart';
 import 'package:dean_institute_mobile_app/widgets/custom_top_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:dean_institute_mobile_app/ui/auth/login/login_page.dart';
 
 import '../profile_pages/payment_methods.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
 
-  void _onLogOutPressed() {
-    print("Log out");
-  }
+ // void _onLogOutPressed() {
+   ///// onPressed: ()
+   // async {
+         //   SharedPreferences prefs = await SharedPreferences.getInstance();
+          //  prefs.remove('email');
+          //  Navigator.pushReplacement(context,
+            //    MaterialPageRoute(builder: (BuildContext ctx) => Login()));
+       //   },
+   // void logoutUser(){
+//SharedPreferences prefs = await SharedPreferences.getInstance();
+//prefs?.clear() ;
+// Navigator.pushAndRemoveUntil(
+     // context, 
+      //ModalRoute.withName("/SplashScreen"), 
+     //ModalRoute.withName("/Home")
+  //  );
+
+   // print("Log out");
+ // }
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +53,19 @@ class Profile extends StatelessWidget {
                 CustomTopAppBar(
                   padding: EdgeInsets.symmetric(vertical: 20.h),
                   title: "Profile",
-                  trailing: TextButton(
-                    onPressed: _onLogOutPressed,
+                  trailing: TextButton( onPressed: () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.remove('email');
+            
+           final LoginPage c = Get.put(LoginPage());
+            c. localStorage.deleteAll();
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (BuildContext ctx) => LoginPage()));
+          },
+                    //onPressed:
+                    
+                    // _onLogOutPressed,
+
                     child: Text(
                       "Log out",
                       style: GoogleFonts.lato(

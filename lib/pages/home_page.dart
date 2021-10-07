@@ -17,7 +17,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Widget> _bottomNavigationPages = [
     Home(),
-    Courses(),
+   // Courses(),
+    CharacterList(),
     Bootcamp(),
     MyCourses(),
     Profile()

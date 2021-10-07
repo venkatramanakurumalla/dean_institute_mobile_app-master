@@ -4,6 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+
+import 'package:dean_institute_mobile_app/ui/auth/login/login_page.dart';
+import 'package:dean_institute_mobile_app/pages/home_page.dart';
+import 'package:http/http.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -52,10 +58,23 @@ class _WelcomePageState extends State<WelcomePage> {
   }
 
   void navigateToAuth() async {
+     FlutterSecureStorage _localStorage = new FlutterSecureStorage();
+     await _localStorage.write(key: "email", value: "email");
+ // final  LoginPage = new LoginPage();
+  final LoginPage c = Get.put(LoginPage());
+ // c.post();
     await Future.delayed(Duration(seconds: 3), () {});
-    Get.offNamed("/login");
-  }
+if(c.localStorage.isBlank==true){
+  
+      Get.offNamed("/login");
+   //Get.offNamed("/signup");
 }
+else{
+//print("no");
+  // Get.offNamed("");
+   Get.to(HomePage());
+  }
+}}
 
 class LowerHalf extends StatelessWidget {
   const LowerHalf({
